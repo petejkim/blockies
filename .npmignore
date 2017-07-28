@@ -1,0 +1,6 @@
+.DS_Store
+build.js
+*.html
+*.png
+npm-debug.log
+yarn-error.log
