@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/alexvandesande/blockies/issues"
   },
-  "homepage": "https://github.com/alexvandesande/blockies#readme"
+  "homepage": "https://github.com/alexvandesande/blockies#readme",
+  "dependencies": {
+    "parse-color": "^1.0.0",
+    "pngjs": "^3.2.0"
+  }
 }

@@ -1,4 +1,7 @@
 (function() {
+	var PNG = require('pngjs').PNG;
+	var parseColor = require('parse-color');
+
 	// The random number is a js implementation of the Xorshift PRNG
 	var randseed = new Array(4); // Xorshift: [x, y, z, w] 32 bit values
 
@@ -68,6 +71,7 @@
 		newOpts.size = opts.size || 8;
 		newOpts.scale = opts.scale || 4;
 		newOpts.seed = opts.seed || Math.floor((Math.random()*Math.pow(10,16))).toString(16);
+
 		seedrand(newOpts.seed);
 
 		newOpts.color = opts.color || createColor();
@@ -77,54 +81,62 @@
 		return newOpts;
 	}
 
-	function renderIcon(opts, canvas) {
+	function createIcon(opts) {
 		var opts = buildOpts(opts || {});
 
 		var imageData = createImageData(opts.size);
 		var width = Math.sqrt(imageData.length);
 
-		canvas.width = canvas.height = opts.size * opts.scale;
+		var bgColor = parseColor(opts.bgcolor).rgb;
+		var fgColor = parseColor(opts.color).rgb;
+		var spotColor = parseColor(opts.spotcolor).rgb;
 
-		var cc = canvas.getContext('2d');
-		cc.fillStyle = opts.bgcolor;
-		cc.fillRect(0, 0, canvas.width, canvas.height);
-		cc.fillStyle = opts.color;
+		var imageWidth = opts.size * opts.scale;
+
+		var png = new PNG({
+			width: imageWidth,
+			height: imageWidth,
+			colorType: 2
+		});
 
 		for(var i = 0; i < imageData.length; i++) {
-
 			// if data is 0, leave the background
-			if(imageData[i]) {
-				var row = Math.floor(i / width);
-				var col = i % width;
+			var row = Math.floor(i / width);
+			var col = i % width;
+			var idx = ((row * opts.size * opts.scale) + col) * opts.scale * 4;
+			var color;
+			switch (imageData[i]) {
+				case 0:
+					color = bgColor;
+					break;
+				case 1:
+					color = fgColor;
+					break;
+				default:
+					color = spotColor;
+			}
 
-				// if data is 2, choose spot color, if 1 choose foreground
-				cc.fillStyle = (imageData[i] == 1) ? opts.color : opts.spotcolor;
-
-				cc.fillRect(col * opts.scale, row * opts.scale, opts.scale, opts.scale);
+			for (var y = 0; y < opts.scale; y++) {
+				for (var x = 0; x < opts.scale; x++) {
+					const o = idx + (x + y * opts.size * opts.scale) * 4;
+					png.data[o] = color[0];
+					png.data[o + 1] = color[1];
+					png.data[o + 2] = color[2];
+					png.data[o + 3] = 255;
+				}
 			}
 		}
-		return canvas;
-	}
 
-	function createIcon(opts) {
-		var opts = buildOpts(opts || {});
-		var canvas = document.createElement('canvas');
+		return PNG.sync.write(png, {});
+  }
 
-		renderIcon(opts, canvas);
+  function createIconAsDataURL(opts) {
+    var buf = createIcon(opts)
+    return 'data:image/png;base64,' + buf.toString('base64')
+  }
 
-		return canvas;
-	}
-
-	var api = {
-		create: createIcon,
-		render: renderIcon
+	module.exports = {
+    createBuffer: createIcon,
+    createDataURL: createIconAsDataURL
 	};
-
-	if (typeof module !== "undefined") {
-		module.exports = api;
-	}
-	if (typeof window !== "undefined") {
-		window.blockies = api;
-	}
-
 })();
