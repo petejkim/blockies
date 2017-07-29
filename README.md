@@ -1,6 +1,9 @@
 Ethereum Blockies PNG
 =====================
 
+[![npm version](https://badge.fury.io/js/ethereum-blockies-png.svg)](https://www.npmjs.com/package/ethereum-blockies-png)
+[![Downloads](https://img.shields.io/npm/dm/ethereum-blockies-png.svg)](https://www.npmjs.com/package/ethereum-blockies-png)
+
 A tiny library for generating Ethereum-variant of blocky identicons, in PNG format.
 
 ![Sample blockies image](sample.png "Blockies")
