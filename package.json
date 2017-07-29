@@ -1,5 +1,5 @@
 {
-  "name": "ethereum-blockies",
+  "name": "ethereum-blockies-png",
   "version": "0.1.1",
   "description": "A tiny library for generating blocky identicons.",
   "main": "blockies.js",
@@ -8,16 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexvandesande/blockies.git"
+    "url": "git+https://github.com/petejkim/ethereum-blockies-png"
   },
-  "author": "Erin Dachtler, Alex Van de Sande",
+  "author": "Erin Dachtler, Alex Van de Sande, Peter Jihoon Kim",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alexvandesande/blockies/issues"
+    "url": "https://github.com/petejkim/ethereum-blockies-png/issues"
   },
-  "homepage": "https://github.com/alexvandesande/blockies#readme",
+  "homepage": "https://github.com/petejkim/ethereum-blockies-png#readme",
   "dependencies": {
     "parse-color": "^1.0.0",
     "pngjs": "^3.2.0"
-  }
+  },
+  "devDependencies": {}
 }
