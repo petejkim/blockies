@@ -3,6 +3,7 @@ declare module 'ethereum-blockies-png' {
 
   export function createDataURL (opts: {
     seed: string
+    size?: number
     scale?: number
   }): string
 }
